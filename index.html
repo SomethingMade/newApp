@@ -1,66 +1,149 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Facebook Login JavaScript Example</title>
-<meta charset="UTF-8">
-</head>
-<body>
-<script>
+<!DOCTYPE html> 
 
-  function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
-    console.log('statusChangeCallback');
-    console.log(response);                   // The current login status of the person.
-    if (response.status === 'connected') {   // Logged into your webpage and Facebook.
-      testAPI();  
-    } else {                                 // Not logged into your webpage or we are unable to tell.
-      document.getElementById('status').innerHTML = 'Please log ' +
-        'into this webpage.';
-    }
-  }
+<html lang="en"> 
 
+  <head> 
 
-  function checkLoginState() {               // Called when a person is finished with the Login Button.
-    FB.getLoginStatus(function(response) {   // See the onlogin handler
-      statusChangeCallback(response);
-    });
-  }
+    <meta charset="UTF-8" /> 
 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
 
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '3255068518146123',
-      cookie     : true,                     // Enable cookies to allow the server to access the session.
-      xfbml      : true,                     // Parse social plugins on this webpage.
-      version    : '{api-version}'           // Use this Graph API version for this call.
-    });
+    <meta
 
+      name="viewport"
 
-    FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
-      statusChangeCallback(response);        // Returns the login status.
-    });
-  };
- 
-  function testAPI() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
-    console.log('Welcome!  Fetching your information.... ');
-    FB.api('/me', function(response) {
-      console.log('Successful login for: ' + response.name);
-      document.getElementById('status').innerHTML =
-        'Thanks for logging in, ' + response.name + '!';
-    });
-  }
+      content="width=device-width, 
 
-</script>
+               initial-scale=1.0"/> 
 
+    <link rel="stylesheet" href="style.css" 
 
-<!-- The JS SDK Login Button -->
+          class="css" /> 
 
-<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-</fb:login-button>
+  </head> 
 
-<div id="status">
-</div>
+  <body> 
 
-<!-- Load the JS SDK asynchronously -->
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
-</body>
+    <div class="container"> 
+
+      <div class="main-content"> 
+
+        <p class="text">GeeksforGeeks</p> 
+
+      </div> 
+
+  
+
+      <div class="centre-content"> 
+
+        <h1 class="price">2499<span>/-</span></h1> 
+
+        <p class="course"> 
+
+           Buy DSA Self-Paced Course Now ! 
+
+        </p> 
+
+      </div> 
+
+  
+
+      <div class="last-content"> 
+
+        <button type="button" class="pay-now-btn"> 
+
+           Apply Coupons 
+
+        </button> 
+
+        <button type="button" class="pay-now-btn"> 
+
+           Pay with Netbanking 
+
+        </button> 
+
+  
+
+        <!-- <button type="button" class="pay-now-btn"> 
+
+        Netbanking options 
+
+        </button> -->
+
+      </div> 
+
+  
+
+      <div class="card-details"> 
+
+        <p>Pay using Credit or Debit card</p> 
+
+  
+
+        <div class="card-number"> 
+
+          <label> Card Number </label> 
+
+          <input
+
+            type="text"
+
+            class="card-number-field"
+
+            placeholder="###-###-###"/> 
+
+        </div> 
+
+        <br /> 
+
+        <div class="date-number"> 
+
+          <label> Expiry Date </label> 
+
+          <input type="text" class="date-number-field" 
+
+                 placeholder="DD-MM-YY" /> 
+
+        </div> 
+
+  
+
+        <div class="cvv-number"> 
+
+          <label> CVV number </label> 
+
+          <input type="text" class="cvv-number-field" 
+
+                 placeholder="xxx" /> 
+
+        </div> 
+
+        <div class="nameholder-number"> 
+
+          <label> Card Holder name </label> 
+
+          <input
+
+            type="text"
+
+            class="card-name-field"
+
+            placeholder="Enter your Name"/> 
+
+        </div> 
+
+        <button type="submit" 
+
+                class="submit-now-btn"> 
+
+          submit 
+
+        </button> 
+
+      </div> 
+
+    </div> 
+
+  </body> 
+
 </html>
