@@ -1,223 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facilitator Dashboard | LM.S</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #FF8C00;
-            --primary-hover: #E67E00;
-            --bg-body: #F3F4F6;
-            --bg-surface: #FFFFFF;
-            --text-main: #111827;
-            --text-muted: #6B7280;
-            --border: #E5E7EB;
-        }
-        
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        
-        body { background-color: var(--bg-body); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
-
-        /* Sidebar Sidebar */
-        .sidebar { width: 260px; background: var(--bg-surface); border-right: 1px solid var(--border); padding: 24px; display: flex; flex-direction: column; }
-        .sidebar h2 { color: var(--primary); font-size: 24px; font-weight: 700; margin-bottom: 32px; letter-spacing: -0.5px; }
-        .nav-item { padding: 12px 16px; margin-bottom: 8px; border-radius: 8px; cursor: pointer; font-weight: 500; color: var(--text-muted); transition: 0.2s; }
-        .nav-item:hover { background: #F9FAFB; color: var(--text-main); }
-        .nav-item.active { background: rgba(255, 140, 0, 0.1); color: var(--primary); }
-
-        /* Main Content */
-        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
-        .header { margin-bottom: 32px; }
-        .header h1 { font-size: 28px; font-weight: 600; }
-        
-        /* Card & Form */
-        .card { background: var(--bg-surface); border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); max-width: 500px; }
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; }
-        .form-group input, .form-group select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 15px; outline: none; }
-        .form-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(255,140,0,0.2); }
-        
-        .btn-primary { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 6px; font-size: 15px; font-weight: 600; width: 100%; cursor: pointer; transition: 0.2s; }
-        .btn-primary:hover { background: var(--primary-hover); }
-        .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
-
-        #status-msg { margin-top: 16px; font-size: 14px; padding: 12px; border-radius: 6px; display: none; }
-        .success { background: #D1FAE5; color: #065F46; }
-        .error { background: #FEE2E2; color: #991B1B; }
-
-        /* Data Table */
-        .table-container { margin-top: 40px; background: var(--bg-surface); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        th, td { padding: 16px; border-bottom: 1px solid var(--border); }
-        th { background: #F9FAFB; font-weight: 600; font-size: 13px; color: var(--text-muted); text-transform: uppercase; }
-        td { font-size: 15px; }
-        .status-badge { padding: 4px 10px; border-radius: 50px; font-size: 12px; font-weight: 600; }
-        .status-pending { background: #FEF3C7; color: #92400E; }
-        .status-active { background: #D1FAE5; color: #065F46; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Survey results</title>
+<style>
+:root{--bg:#fff;--ink:#111;--mute:#6b6b70;--line:#dcdce0;--soft:#f3f3f5;--err:#c62828;color-scheme:light dark}
+@media(prefers-color-scheme:dark){:root{--bg:#0a0a0d;--ink:#f5f5f7;--mute:#9a9aa2;--line:#2a2a30;--soft:#17171b;--err:#ef6b6b}}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 18px 70px}
+h1{font-size:clamp(1.6rem,5vw,2.2rem);margin:0 0 4px;letter-spacing:-.02em}
+.sub{color:var(--mute);margin:0 0 22px}
+button,input{font:inherit}
+input{color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 12px;min-width:0}
+input:focus,button:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+.btn{padding:9px 16px;border-radius:999px;border:1px solid var(--ink);background:var(--ink);color:var(--bg);font-weight:600;cursor:pointer}
+.btn.alt{background:transparent;color:var(--ink)}
+.btn:disabled{opacity:.5;cursor:default}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:22px}
+.bar input{flex:1 1 220px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:22px}
+.stat{border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.stat b{display:block;font-size:1.7rem;line-height:1.2}
+.stat span{color:var(--mute);font-size:.85rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:16px}
+.card{border:1px solid var(--line);border-radius:16px;padding:16px;min-width:0}
+.card h3{font-size:1rem;margin:0 0 4px}
+.meta{color:var(--mute);font-size:.84rem;margin-bottom:10px}
+.tog{display:flex;gap:6px;margin-bottom:10px}
+.tog button{padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;font-size:.85rem}
+.tog button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.cv{position:relative;height:280px}
+.cmts{max-height:300px;overflow:auto;margin:0;padding:0;list-style:none}
+.cmts li{padding:10px 12px;background:var(--soft);border-radius:10px;margin-bottom:8px;overflow-wrap:anywhere}
+.msg{color:var(--mute);min-height:1.3em}
+.msg.bad{color:var(--err)}
+.hide{display:none}
+</style>
 </head>
 <body>
+<div class="wrap">
+  <!-- Dashboard -->
+  <section id="dash">
+    <h1 id="ttl">Survey results</h1>
+    <p class="sub" id="desc"></p>
+    <div class="bar">
+      <input id="sid" placeholder="Survey ID" value="mogalakwena-climate" aria-label="Survey ID">
+      <button class="btn" id="load">Load</button>
+      <button class="btn alt" id="csv" disabled>Export CSV</button>
+    </div>
+    <div class="msg" id="msg" role="status"></div>
+    <div class="stats" id="stats"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+</div>
 
-    <aside class="sidebar">
-        <h2>Lumina LMS</h2>
-        <div class="nav-item">Dashboard Overview</div>
-        <div class="nav-item active">Manage Learners</div>
-        <div class="nav-item">Task Hub</div>
-        <div class="nav-item">Submissions</div>
-    </aside>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBQSPwpVbGrdCuOoyitAeWQHIeipj2MgIY",
+  authDomain: "newstart-64c43.firebaseapp.com",
+  databaseURL: "https://newstart-64c43-default-rtdb.firebaseio.com",
+  projectId: "newstart-64c43",
+  storageBucket: "newstart-64c43.firebasestorage.app",
+  messagingSenderId: "941619830061",
+  appId: "1:941619830061:web:de9e0f791eb8f6eacf87a4"
+};
+const NODE = { defs: 'surveys', responses: 'survey_responses' };
 
-    <main class="main-content">
-        <div class="header">
-            <h1>Learner Registration</h1>
-            <p style="color: var(--text-muted); margin-top: 8px;">Pre-register learners so they can access their portal.</p>
-        </div>
+/* Fallback copy of the survey in index.html, used when surveys/{id} does not exist in the database.
+   If you edit the questions in index.html, update this copy too (or save the survey to surveys/{id}). */
+const FALLBACK = {
+  title: 'Climate and mining in Mogalakwena',
+  questions: [
+    { id: 'q1', type: 'choice', text: 'Where do you live?', options: ['Next to a mine (within 5 km)', 'Mokopane town', 'Rural village in Mogalakwena', 'Farm', 'Elsewhere in Limpopo'] },
+    { id: 'q2', type: 'choice', text: 'How long have you lived in the area?', options: ['Less than 5 years', '5 to 15 years', '16 to 30 years', 'More than 30 years'] },
+    { id: 'q3', type: 'rating', text: 'Has it become hotter over the years you have lived here?', low: 'Not at all', high: 'Much hotter' },
+    { id: 'q4', type: 'choice', text: 'How has the rain changed?', options: ['Less rain', 'More unpredictable', 'About the same', 'More rain', 'Not sure'] },
+    { id: 'q5', type: 'multi', text: 'Which changes have you noticed near you?', options: ['More dust', 'Poorer air quality', 'Water shortages', 'Drier land or failing crops', 'Livestock affected', 'Noise or blasting vibrations', 'More heat in summer'] },
+    { id: 'q6', type: 'rating', text: 'How much do you think mining activity contributes to these changes?', low: 'Not at all', high: 'A great deal' },
+    { id: 'q7', type: 'multi', text: 'What else do you think contributes?', options: ['Coal-fired electricity (Eskom)', 'Farming', 'Veld fires or burning waste', 'Cutting wood for fuel', 'Vehicles and transport', 'Global climate change', 'Not sure'] },
+    { id: 'q8', type: 'choice', text: 'Has your access to water changed in the last 10 years?', options: ['Much worse', 'A little worse', 'No change', 'Better'] },
+    { id: 'q9', type: 'choice', text: 'Does anyone in your household work for, or earn income linked to, a mine?', options: ['Yes', 'No', 'Prefer not to say'] },
+    { id: 'q10', type: 'multi', text: 'What should mines do more of?', options: ['Reduce dust', 'Use renewable energy', 'Share air and water data with the community', 'Rehabilitate mined land', 'Support local water supply', 'Let communities help monitor impacts'] },
+    { id: 'q11', type: 'text', text: 'Anything else you want to tell us?' }
+  ]
+};
 
-        <div class="card">
-            <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" id="learner-name" placeholder="Jane Doe">
-            </div>
-            <div class="form-group">
-                <label>Email Address (Used for Login)</label>
-                <input type="email" id="learner-email" placeholder="jane.doe@example.com">
-            </div>
-            <div class="form-group">
-                <label>ID Number</label>
-                <input type="text" id="learner-id" placeholder="National ID">
-            </div>
-            <div class="form-group">
-                <label>Cohort / Course</label>
-                <select id="learner-cohort">
-                    <option value="IT_Support_2026">IT Support 2026</option>
-                    <option value="Business_Admin_2026">Business Admin 2026</option>
-                </select>
-            </div>
-            <button class="btn-primary" id="register-btn">Whitelist Learner</button>
-            <div id="status-msg"></div>
-        </div>
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const $ = id => document.getElementById(id);
+const PALETTE = ['#3b82f6','#f59e0b','#10b981','#ef4444','#8b5cf6','#14b8a6','#ec4899','#84cc16','#f97316','#64748b'];
+let charts = [], current = { survey: null, rows: [] };
 
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Cohort</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="learner-table-body">
-                    </tbody>
-            </table>
-        </div>
-    </main>
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+/* ---------- data ---------- */
+$('load').onclick = loadData;
+window.addEventListener('load', loadData);
+$('sid').addEventListener('keydown', e => { if (e.key === 'Enter') loadData(); });
 
-        // 1. Firebase Configuration (From your specific file)
-        const firebaseConfig = {
-            apiKey: "AIzaSyBQSPwpVbGrdCuOoyitAeWQHIeipj2MgIY",
-            authDomain: "newstart-64c43.firebaseapp.com",
-            databaseURL: "https://newstart-64c43-default-rtdb.firebaseio.com",
-            projectId: "newstart-64c43",
-            storageBucket: "newstart-64c43.firebasestorage.app",
-            messagingSenderId: "941619830061",
-            appId: "1:941619830061:web:de9e0f791eb8f6eacf87a4"
-        };
+async function loadData() {
+  const id = $('sid').value.trim();
+  if (!id) return;
+  setMsg('Loading…');
+  $('csv').disabled = true;
+  try {
+    const [defSnap, resSnap] = await Promise.all([
+      db.ref(`${NODE.defs}/${id}`).get().catch(() => null),
+      db.ref(`${NODE.responses}/${id}`).get()
+    ]);
+    let survey = FALLBACK;
+    if (defSnap && defSnap.exists() && defSnap.val().questions) {
+      const v = defSnap.val();
+      survey = { ...v, questions: Array.isArray(v.questions) ? v.questions.filter(Boolean) : Object.values(v.questions) };
+    }
+    const rows = [];
+    resSnap.forEach(c => { const v = c.val(); if (v && v.answers) rows.push({ key: c.key, ...v }); });
+    rows.sort((a, b) => (a.submittedAt || 0) - (b.submittedAt || 0));
+    current = { survey, rows, id };
+    setMsg(rows.length ? '' : 'No responses yet for this survey ID.');
+    $('csv').disabled = !rows.length;
+    render();
+  } catch (e) {
+    const denied = String(e.code || e.message).toUpperCase().includes('PERMISSION');
+    setMsg(denied ? 'Permission denied. Update the database rules to allow reading survey_responses.' : 'Could not load data: ' + (e.message || e), true);
+  }
+}
+function setMsg(t, bad) { $('msg').textContent = t; $('msg').className = 'msg' + (bad ? ' bad' : ''); }
 
-        // 2. Cloudinary Configuration (For future task uploads)
-        const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dqkujefxj/auto/upload";
-        const CLOUDINARY_PRESET = "banter_box";
+/* ---------- aggregate ---------- */
+function tally(q, rows) {
+  const counts = new Map();
+  (q.type === 'rating' ? [1,2,3,4,5] : (q.options || [])).forEach(o => counts.set(String(o), 0));
+  let answered = 0, sum = 0;
+  rows.forEach(r => {
+    const a = r.answers[q.id];
+    if (a == null) return;
+    answered++;
+    const list = Array.isArray(a) ? a : [a];
+    list.forEach(v => { const k = String(v); counts.set(k, (counts.get(k) || 0) + 1); });
+    if (q.type === 'rating') sum += Number(a);
+  });
+  return { counts, answered, avg: answered ? sum / answered : 0 };
+}
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
+/* ---------- render ---------- */
+function render() {
+  charts.forEach(c => c.destroy()); charts = [];
+  const { survey, rows } = current;
+  $('ttl').textContent = survey.title || 'Survey results';
+  $('desc').textContent = '';
+  $('stats').replaceChildren(); $('grid').replaceChildren();
+  if (!rows.length) return;
 
-        // UI Elements
-        const registerBtn = document.getElementById('register-btn');
-        const statusMsg = document.getElementById('status-msg');
-        const tableBody = document.getElementById('learner-table-body');
+  const first = rows[0].submittedAt, last = rows[rows.length - 1].submittedAt;
+  const fmt = t => t ? new Date(t).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) : '–';
+  [[rows.length, 'Responses'], [fmt(first), 'First response'], [fmt(last), 'Latest response']].forEach(([v, l]) => {
+    const s = el('div', 'stat'); s.append(el('b', '', v), el('span', '', l)); $('stats').append(s);
+  });
 
-        function showMessage(msg, isError = false) {
-            statusMsg.textContent = msg;
-            statusMsg.className = isError ? 'error' : 'success';
-            statusMsg.style.display = 'block';
-            setTimeout(() => statusMsg.style.display = 'none', 5000);
+  Chart.defaults.color = css('--ink');
+  Chart.defaults.borderColor = css('--line');
+
+  survey.questions.forEach(q => {
+    const card = el('div', 'card');
+    card.append(el('h3', '', q.text));
+    if (q.type === 'text') {
+      const comments = rows.filter(r => r.answers[q.id]).reverse();
+      card.append(el('div', 'meta', `${comments.length} comment${comments.length === 1 ? '' : 's'}`));
+      const ul = el('ul', 'cmts');
+      comments.forEach(r => ul.append(el('li', '', r.answers[q.id])));
+      card.append(ul);
+      $('grid').append(card);
+      return;
+    }
+    const t = tally(q, rows);
+    let meta = `${t.answered} of ${rows.length} answered`;
+    if (q.type === 'rating') meta += ` · average ${t.avg.toFixed(2)} out of 5` + (q.low ? ` (1 = ${q.low}, 5 = ${q.high})` : '');
+    if (q.type === 'multi') meta += ' · people could pick several';
+    card.append(el('div', 'meta', meta));
+
+    const tog = el('div', 'tog');
+    const cv = el('div', 'cv'), canvas = document.createElement('canvas');
+    cv.append(canvas);
+    let kind = q.type === 'choice' ? 'pie' : 'bar', chart = null;
+    const labels = [...t.counts.keys()], data = [...t.counts.values()];
+    const draw = () => {
+      if (chart) { charts = charts.filter(c => c !== chart); chart.destroy(); }
+      const pie = kind === 'pie';
+      chart = new Chart(canvas, {
+        type: pie ? 'pie' : 'bar',
+        data: { labels, datasets: [{ data, backgroundColor: pie ? labels.map((_, i) => PALETTE[i % PALETTE.length]) : PALETTE[0], borderColor: css('--bg'), borderWidth: pie ? 2 : 0, borderRadius: pie ? 0 : 6 }] },
+        options: {
+          maintainAspectRatio: false,
+          indexAxis: pie || q.type === 'rating' ? 'x' : 'y',
+          plugins: {
+            legend: { display: pie, position: 'bottom' },
+            tooltip: { callbacks: { label: c => ` ${c.raw} (${t.answered ? Math.round(c.raw / t.answered * 100) : 0}%)` } }
+          },
+          scales: pie ? {} : { [q.type === 'rating' ? 'y' : 'x']: { beginAtZero: true, ticks: { precision: 0 } } }
         }
+      });
+      charts.push(chart);
+      [...tog.children].forEach(b => b.classList.toggle('on', b.dataset.k === kind));
+    };
+    ['pie', 'bar'].forEach(k => {
+      const b = el('button', '', k === 'pie' ? 'Pie' : 'Bar'); b.type = 'button'; b.dataset.k = k;
+      b.onclick = () => { kind = k; draw(); };
+      tog.append(b);
+    });
+    card.append(tog, cv);
+    $('grid').append(card);
+    draw();
+  });
+}
 
-        // 3. Handle Facilitator Adding a Learner (Pre-registration)
-        registerBtn.addEventListener('click', async () => {
-            const name = document.getElementById('learner-name').value.trim();
-            const email = document.getElementById('learner-email').value.trim().toLowerCase();
-            const idNumber = document.getElementById('learner-id').value.trim();
-            const cohort = document.getElementById('learner-cohort').value;
-
-            if (!name || !email || !idNumber) {
-                showMessage("Please fill in all fields.", true);
-                return;
-            }
-
-            registerBtn.disabled = true;
-            registerBtn.textContent = "Registering...";
-
-            try {
-                // Encode email to use as a database key (Firebase RTDB keys can't contain '.')
-                const safeEmail = email.replace(/\./g, ','); 
-                
-                const userRef = ref(database, `whitelisted_learners/${safeEmail}`);
-                
-                await set(userRef, {
-                    name: name,
-                    email: email,
-                    idNumber: idNumber,
-                    cohort: cohort,
-                    status: 'pending', // Waiting for them to sign up
-                    role: 'learner',
-                    addedAt: Date.now()
-                });
-
-                showMessage(`Successfully whitelisted ${email}. They can now sign up.`);
-                
-                // Clear form
-                document.getElementById('learner-name').value = '';
-                document.getElementById('learner-email').value = '';
-                document.getElementById('learner-id').value = '';
-
-            } catch (error) {
-                showMessage("Error: " + error.message, true);
-            } finally {
-                registerBtn.disabled = false;
-                registerBtn.textContent = "Whitelist Learner";
-            }
-        });
-
-        // 4. Real-time Table Updates to view registered learners
-        onValue(ref(database, 'whitelisted_learners'), (snapshot) => {
-            tableBody.innerHTML = '';
-            if (snapshot.exists()) {
-                snapshot.forEach((childSnapshot) => {
-                    const learner = childSnapshot.val();
-                    const tr = document.createElement('tr');
-                    
-                    const statusClass = learner.status === 'active' ? 'status-active' : 'status-pending';
-                    const statusText = learner.status === 'active' ? 'Active' : 'Pending Signup';
-
-                    tr.innerHTML = `
-                        <td><strong>${learner.name}</strong></td>
-                        <td>${learner.email}</td>
-                        <td>${learner.cohort.replace(/_/g, ' ')}</td>
-                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                    `;
-                    tableBody.appendChild(tr);
-                });
-            } else {
-                tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#6B7280;">No learners registered yet.</td></tr>';
-            }
-        });
-    </script>
+/* ---------- CSV ---------- */
+$('csv').onclick = () => {
+  const { survey, rows, id } = current;
+  const esc = v => {
+    let s = v == null ? '' : Array.isArray(v) ? v.join('; ') : String(v);
+    if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
+    return '"' + s.replace(/"/g, '""') + '"';
+  };
+  const head = ['Submitted', ...survey.questions.map(q => q.text)];
+  const lines = [head.map(esc).join(',')];
+  rows.forEach(r => lines.push([r.submittedAt ? new Date(r.submittedAt).toISOString() : '', ...survey.questions.map(q => r.answers[q.id])].map(esc).join(',')));
+  const a = el('a'); a.href = URL.createObjectURL(new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv' }));
+  a.download = `${id}-responses.csv`; a.click(); URL.revokeObjectURL(a.href);
+};
+</script>
 </body>
 </html>
